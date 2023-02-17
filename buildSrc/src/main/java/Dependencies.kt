@@ -16,7 +16,7 @@ object Dependencies {
     }
 
     object ProjectPlugins{
-        const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.3"
+        const val androidGradlePlugin = "com.android.tools.build:gradle:7.4.1"
         const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0"
     }
 }
