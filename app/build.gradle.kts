@@ -10,11 +10,11 @@ repositories {
 }
 
 android {
-    namespace = "com.example.randomusers"
+    namespace = Config.appName
     compileSdk = Config.compileSdk
 
     defaultConfig {
-        applicationId = Config.applicationId
+        applicationId = Config.appName
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
         versionCode = Config.versionCode
@@ -54,19 +54,20 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation(Dependencies.Core.core)
+    implementation(Dependencies.Core.composeActivity)
+
+    implementation(Dependencies.Lifecycle.runtime)
+
+    testImplementation(Dependencies.Test.junit)
+    androidTestImplementation(Dependencies.Test.junitTest)
+    androidTestImplementation(Dependencies.Test.testCore)
 
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.preview)
     implementation(Dependencies.Compose.material)
+    debugImplementation(Dependencies.Compose.UiTooling)
+    debugImplementation(Dependencies.Compose.TestManifest)
+    androidTestImplementation(Dependencies.Compose.JUnitTest)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    androidTestImplementation(Dependencies.Compose.composeJUnit)
-    debugImplementation(Dependencies.Compose.composeUiTooling)
-    debugImplementation(Dependencies.Compose.composeTestManifest)
 }
