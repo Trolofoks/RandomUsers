@@ -1,4 +1,4 @@
-package com.example.randomusers.ui.theme
+package com.honey.randomusers.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

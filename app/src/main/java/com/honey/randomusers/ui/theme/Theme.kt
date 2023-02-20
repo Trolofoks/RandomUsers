@@ -1,4 +1,4 @@
-package com.example.randomusers.ui.theme
+package com.honey.randomusers.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

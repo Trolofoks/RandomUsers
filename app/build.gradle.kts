@@ -1,12 +1,8 @@
 plugins {
-    id ("com.android.application")
-    kotlin ("android")
-    kotlin ("kapt")
-}
-
-repositories {
-    google()
-    mavenCentral()
+    id (Dependencies.Plugins.application)
+    id (Dependencies.Plugins.kotlinAndroid)
+    id (Dependencies.Plugins.kotlinKapt)
+    id (Dependencies.Plugins.hilt)
 }
 
 android {
@@ -43,7 +39,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.Compose.version
+        kotlinCompilerExtensionVersion = Dependencies.Core.Version.composeCompiler
     }
     packagingOptions {
         resources {
@@ -54,20 +50,37 @@ android {
 
 dependencies {
 
-    implementation(Dependencies.Core.core)
-    implementation(Dependencies.Core.composeActivity)
+    implementation(Dependencies.Core.coreKts)
+    implementation(Dependencies.Core.appCompat)
+    implementation(Dependencies.Core.activityCompose)
+    implementation(Dependencies.Core.androidMaterial)
 
-    implementation(Dependencies.Lifecycle.runtime)
+    implementation(Dependencies.Lifecycle.viewModelKtx)
+    implementation(Dependencies.Lifecycle.runtimeKtx)
+    implementation(Dependencies.Lifecycle.extensions)
+    
+//    implementation(Dependencies.Compose.ui)
+    implementation(Dependencies.Compose.uiTooling)
+    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.materialIconsExtended)
+    implementation(Dependencies.Compose.coilCompose)
+
+    implementation(Dependencies.Navigation.navigationCompose)
+    implementation(Dependencies.Navigation.lifecycleViewModelCompose)
+
+    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Retrofit.retrofitConverterGson)
+
+    implementation(Dependencies.Hilt.android)
+    implementation(Dependencies.Hilt.compiler)
+    implementation(Dependencies.Hilt.compose)
 
     testImplementation(Dependencies.Test.junit)
-    androidTestImplementation(Dependencies.Test.junitTest)
-    androidTestImplementation(Dependencies.Test.testCore)
-
-    implementation(Dependencies.Compose.ui)
-    implementation(Dependencies.Compose.preview)
-    implementation(Dependencies.Compose.material)
-    debugImplementation(Dependencies.Compose.UiTooling)
-    debugImplementation(Dependencies.Compose.TestManifest)
-    androidTestImplementation(Dependencies.Compose.JUnitTest)
-
+    testImplementation(Dependencies.Test.roboeletric)
+    testImplementation(Dependencies.Test.mockk)
+    testImplementation(Dependencies.Test.okHttp3MockWebServer)
+    androidTestImplementation(Dependencies.Test.androidJunit)
+    androidTestImplementation(Dependencies.Test.espressoCore)
+    androidTestImplementation(Dependencies.Test.composeJunit)
 }

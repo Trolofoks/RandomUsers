@@ -1,4 +1,4 @@
-package com.example.randomusers
+package com.honey.randomusers
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.randomusers.ui.theme.RandomUsersTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.honey.randomusers.example.KittenView
+import com.honey.randomusers.screens.main.MainScreen
+import com.honey.randomusers.screens.main.MainViewModel
+import com.honey.randomusers.ui.theme.RandomUsersTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +24,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colors.background
                 ) {
+                    val viewModel = viewModel<MainViewModel>()
 
+                    MainScreen(navController = null, mainViewModel = viewModel)
                 }
             }
         }
