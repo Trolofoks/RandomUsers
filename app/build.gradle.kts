@@ -42,9 +42,7 @@ android {
         kotlinCompilerExtensionVersion = Dependencies.Core.Version.composeCompiler
     }
     packagingOptions {
-        resources {
-            exclude("/META-INF/{AL2.0,LGPL2.1}")
-        }
+        exclude("META-INF/gradle/incremental.annotation.processors")
     }
 }
 
