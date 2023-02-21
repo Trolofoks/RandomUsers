@@ -21,9 +21,16 @@ class MainViewModel (
     var mainViewState by mutableStateOf<MainViewState>(MainViewState.Loading)
         private set
 
+    //тут мы исходя из стейта отправляем Event(действие пользователя) куда нужно
+    fun obtainEvent(event: MainEvent){
+        when(mainViewState){
+            is MainViewState.Display -> reduce(event, MainViewState.NoItems)
+            is MainViewState.NoItems -> reduce(event, MainViewState.NoItems)
+            is MainViewState.Loading -> reduce(event, MainViewState.Loading)
+        }
+    }
 
-    //fun
-
+    //тут уже проверяем какое действие сделал пользователь
     private fun reduce(event: MainEvent, currentState: MainViewState.NoItems) {
         when(event){
             MainEvent.ShowHello -> performShowHello()
@@ -33,6 +40,12 @@ class MainViewModel (
 
     private fun reduce(event: MainEvent, currentState: MainViewState.Display){
         when (event){
+            else ->{}
+        }
+    }
+
+    private fun reduce(event: MainEvent, currentState: MainViewState.Loading){
+        when(event){
             else ->{}
         }
     }
