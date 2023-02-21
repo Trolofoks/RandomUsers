@@ -7,14 +7,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.honey.randomusers.screens.main.model.MainViewState
 
 @Composable
 internal fun MainScreen(
-    modifier: Modifier = Modifier,
-    navController: NavController?,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel = MainViewModel()
 ){
     val viewState = mainViewModel.mainViewState
     val helloString = remember {

@@ -21,6 +21,9 @@ class MainViewModel (
     var mainViewState by mutableStateOf<MainViewState>(MainViewState.Loading)
         private set
 
+
+    //fun
+
     private fun reduce(event: MainEvent, currentState: MainViewState.NoItems) {
         when(event){
             MainEvent.ShowHello -> performShowHello()
