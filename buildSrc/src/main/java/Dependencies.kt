@@ -10,7 +10,7 @@ object Dependencies {
     object ClassPath {
         const val versionGradle = "7.4.1"
         const val versionKotlin = "1.8.10"
-        const val versionDagger = "2.44"
+        const val versionDagger = "2.45"
 
         const val androidGradlePlugin = "com.android.tools.build:gradle:$versionGradle"
         const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versionKotlin"
@@ -69,7 +69,7 @@ object Dependencies {
     }
 
     object Hilt {
-        const val version = "2.44"
+        const val version = "2.45"
         const val versionCompose = "1.0.0"
 
         const val android = "com.google.dagger:hilt-android:$version"

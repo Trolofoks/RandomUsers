@@ -1,7 +1,6 @@
 package com.honey.randomusers.app
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp
+//@HiltAndroidApp
 class App: Application()

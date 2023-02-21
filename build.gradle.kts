@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath(Dependencies.ClassPath.androidGradlePlugin)
         classpath(Dependencies.ClassPath.kotlinGradlePlugin)
-        classpath(Dependencies.ClassPath.daggerGradlePlugin)
+//        classpath(Dependencies.ClassPath.daggerGradlePlugin)
     }
 }
 
