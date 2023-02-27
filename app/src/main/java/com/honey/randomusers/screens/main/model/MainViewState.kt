@@ -13,6 +13,7 @@ sealed class MainViewState {
         val searchText: String,
         val items: List<SpeakerItemModel>
     ): MainViewState()
+    object OnExit : MainViewState()
     object Loading : MainViewState()
     object Error : MainViewState()
 }

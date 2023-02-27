@@ -1,12 +1,12 @@
 package com.honey.randomusers.screens.main
 
-import android.util.Log
 import androidx.compose.runtime.*
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.view.fullscreen.MainViewDisplay
 import com.honey.randomusers.screens.main.view.fullscreen.MainViewFullInfo
 import com.honey.randomusers.screens.main.view.fullscreen.MainViewSearch
+import com.honey.randomusers.screens.main.view.fullscreen.MainViewSureExit
 
 @Composable
 internal fun MainScreen(
@@ -31,11 +31,16 @@ internal fun MainScreen(
                 },
                 onSearch = { searchText ->
                     mainViewModel.obtainEvent(MainEvent.SearchEnter(searchText))
+                },
+                onBackPress = {
+                    mainViewModel.obtainEvent(MainEvent.OnBackPress)
                 }
             )
         }
         is MainViewState.FullInfo ->{
-            MainViewFullInfo(model = state.item)
+            MainViewFullInfo(model = state.item, onExit = {
+                mainViewModel.obtainEvent(MainEvent.OnBackPress)
+            })
         }
         is MainViewState.Search -> {
             MainViewSearch(
@@ -49,7 +54,14 @@ internal fun MainScreen(
                 }
             )
         }
-
+        is MainViewState.OnExit -> {
+            MainViewSureExit(
+                viewState = state,
+                response = {sureToExit->
+                    mainViewModel.obtainEvent(MainEvent.SureToExit(sureToExit))
+                }
+            )
+        }
         is MainViewState.Loading -> {}
         is MainViewState.Error -> {}
 

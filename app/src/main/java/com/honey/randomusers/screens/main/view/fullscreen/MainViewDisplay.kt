@@ -1,6 +1,7 @@
 package com.honey.randomusers.screens.main.view.fullscreen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -34,8 +35,14 @@ fun MainViewDisplay(
     viewState: MainViewState.Display,
     onCardClicked: ((cardModel: SpeakerItemModel) -> Unit)? = null,
     onFavClicked: ((itemId: Int, newValue: Boolean) -> Unit)? = null,
-    onSearch: ((search: String)-> Unit)? = null
+    onSearch: ((search: String)-> Unit)? = null,
+    onBackPress: (()-> Unit)? = null
 ){
+
+    BackHandler {
+        onBackPress?.invoke()
+    }
+
     val isKeyboardOpen = keyboardAsState()
 
     Box(

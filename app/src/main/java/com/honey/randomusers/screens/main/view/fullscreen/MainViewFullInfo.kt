@@ -1,5 +1,6 @@
 package com.honey.randomusers.screens.main.view.fullscreen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,8 +21,13 @@ import com.honey.randomusers.screens.main.model.SpeakerItemModel
 
 @Composable
 fun MainViewFullInfo(
-    model: SpeakerItemModel
+    model: SpeakerItemModel,
+    onExit: (() -> Unit)? = null
 ){
+    BackHandler {
+        onExit?.invoke()
+    }
+
     Column (
         modifier = Modifier
             .fillMaxSize()

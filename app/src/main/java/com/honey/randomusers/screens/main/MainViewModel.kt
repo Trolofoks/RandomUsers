@@ -1,8 +1,6 @@
 package com.honey.randomusers.screens.main
 
 import android.util.Log
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.honey.randomusers.R
@@ -86,6 +84,7 @@ class MainViewModel (
             is MainViewState.Loading -> reduce(event, mainViewState.value as MainViewState.Loading)
             is MainViewState.Error -> reduce(event, mainViewState.value as MainViewState.Error)
             is MainViewState.Search -> reduce(event, mainViewState.value as MainViewState.Search)
+            is MainViewState.OnExit -> reduce(event, mainViewState.value as MainViewState.OnExit)
         }
     }
 
@@ -95,13 +94,18 @@ class MainViewModel (
             is MainEvent.OnCardClicked -> {performItemClick(event.cardModel)}
             is MainEvent.OnAddFavClicked -> {performFavoriteClick(event.itemId, event.newValue)}
             is MainEvent.SearchEnter -> {performSearchEnter(event.searchText)}
+            is MainEvent.OnBackPress -> {performSureForExit()}
             else ->{}
         }
     }
 
+    private fun reduce (event: MainEvent, currentState: MainViewState.OnExit){
+
+    }
+
     private fun reduce(event:MainEvent, currentState: MainViewState.FullInfo){
         when (event){
-
+            is MainEvent.OnBackPress -> {performFullInfoExit()}
             else -> {}
         }
     }
@@ -126,6 +130,10 @@ class MainViewModel (
         }
     }
 
+    private fun performSureForExit(){
+
+    }
+
     private fun performItemClick(speakerModel: SpeakerItemModel){
         _mainViewState.value = MainViewState.FullInfo(item = speakerModel)
     }
@@ -141,6 +149,13 @@ class MainViewModel (
 
         _mainViewState.value = MainViewState.Display(
             searchText = searchText,
+            items = hardCodeDataList,
+            favItems = favorites.toList()
+        )
+    }
+
+    private fun performFullInfoExit(){
+        _mainViewState.value = MainViewState.Display(
             items = hardCodeDataList,
             favItems = favorites.toList()
         )
