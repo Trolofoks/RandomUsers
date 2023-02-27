@@ -56,7 +56,6 @@ dependencies {
     implementation(Dependencies.Lifecycle.viewModelKtx)
     implementation(Dependencies.Lifecycle.runtimeKtx)
     implementation(Dependencies.Lifecycle.extensions)
-    
 //    implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.uiTooling)
     implementation(Dependencies.Compose.uiToolingPreview)

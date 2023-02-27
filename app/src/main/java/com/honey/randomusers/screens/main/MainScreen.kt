@@ -1,36 +1,58 @@
 package com.honey.randomusers.screens.main
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import android.util.Log
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
+import com.honey.randomusers.screens.main.view.fullscreen.MainViewDisplay
+import com.honey.randomusers.screens.main.view.fullscreen.MainViewFullInfo
+import com.honey.randomusers.screens.main.view.fullscreen.MainViewSearch
 
 @Composable
 internal fun MainScreen(
     mainViewModel: MainViewModel = MainViewModel()
 ){
-    val viewState = mainViewModel.mainViewState
-    val helloString = remember {
-        mutableStateOf("Hello you can't see this")
-    }
+    val viewState = mainViewModel.mainViewState.collectAsState()
 
-    when (viewState){
-        MainViewState.Loading -> {helloString.value = "But you can see this"}
-        MainViewState.NoItems -> {}
+    when (val state = viewState.value){
+        is MainViewState.Display -> {
+            MainViewDisplay(
+                viewState = state,
+                onCardClicked = { item ->
+                    mainViewModel.obtainEvent(MainEvent.OnCardClicked(item))
+                },
+                onFavClicked = { itemId, newValue ->
+                    mainViewModel.obtainEvent(
+                        MainEvent.OnAddFavClicked(
+                            itemId = itemId,
+                            newValue = newValue
+                        )
+                    )
+                },
+                onSearch = { searchText ->
+                    mainViewModel.obtainEvent(MainEvent.SearchEnter(searchText))
+                }
+            )
+        }
+        is MainViewState.FullInfo ->{
+            MainViewFullInfo(model = state.item)
+        }
+        is MainViewState.Search -> {
+            MainViewSearch(
+                viewState = state,
+                onCardClicked = {item->
+                    mainViewModel.obtainEvent(MainEvent.OnCardClicked(item))
+                },
+                onExitSearch = {searchText ->
+
+                    mainViewModel.obtainEvent(MainEvent.SearchExit(searchText))
+                }
+            )
+        }
+
+        is MainViewState.Loading -> {}
+        is MainViewState.Error -> {}
 
         else -> {}
     }
-
-
-
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colors.primaryVariant)){
-        Text(text = helloString.value)
-    }
-
 }
