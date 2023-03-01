@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,13 +26,19 @@ fun MainViewSureExit(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colors.background)
+        .background(MaterialTheme.colors.background),
+        contentAlignment = Center
     ){
         Card(modifier = Modifier.fillMaxWidth(0.9f)) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = "Do you sure to leave this beautifully app? Don't forget me!",
-                modifier = Modifier.align(CenterHorizontally))
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Text(text = "Do you sure to leave this beautifully app?",
+                    modifier = Modifier.align(CenterHorizontally))
+                Text(text = " Don't forget me!",
+                    modifier = Modifier.align(CenterHorizontally))
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 48.dp)) {
                     Button(
                         modifier = Modifier.weight(0.4f),
                         onClick = {
@@ -40,6 +47,7 @@ fun MainViewSureExit(
                     ) {
                         Text(text = "Cancel")
                     }
+                    Box(modifier = Modifier.weight(0.2f))
                     Button(
                         modifier = Modifier.weight(0.4f),
                         onClick = {

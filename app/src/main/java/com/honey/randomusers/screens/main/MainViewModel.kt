@@ -10,6 +10,7 @@ import com.honey.randomusers.screens.main.model.SpeakerItemModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 //@HiltViewModel
 class MainViewModel (
@@ -100,7 +101,12 @@ class MainViewModel (
     }
 
     private fun reduce (event: MainEvent, currentState: MainViewState.OnExit){
-
+        when (event){
+            is MainEvent.SureToExit -> {
+                performReallySure(event.response)
+            }
+            else -> {}
+        }
     }
 
     private fun reduce(event:MainEvent, currentState: MainViewState.FullInfo){
@@ -131,7 +137,7 @@ class MainViewModel (
     }
 
     private fun performSureForExit(){
-
+        _mainViewState.value = MainViewState.OnExit
     }
 
     private fun performItemClick(speakerModel: SpeakerItemModel){
@@ -143,6 +149,17 @@ class MainViewModel (
             searchText = searchText,
             items = hardCodeDataList
         )
+    }
+
+    private fun performReallySure(sure: Boolean){
+        if (sure){
+            exitProcess(0)
+        } else {
+            _mainViewState.value = MainViewState.Display(
+                items = hardCodeDataList,
+                favItems = favorites.toList()
+            )
+        }
     }
 
     private fun performSearchExit(searchText: String){
