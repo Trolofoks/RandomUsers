@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RandomUsers</string>
+    <string name="title_main">Speakers</string>
+    <string name="title_full">Full Info</string>
 </resources>
