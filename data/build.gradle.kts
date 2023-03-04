@@ -1,6 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id (Dependencies.Plugins.application)
+    id (Dependencies.Plugins.kotlinAndroid)
+    id (Dependencies.Plugins.kotlinKapt)
 }
 
 android {
@@ -12,7 +13,7 @@ android {
         targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+//        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -34,7 +35,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":app"))
 
+    implementation(Dependencies.Room.kapt)
+    implementation(Dependencies.Room.ktx)
+    implementation(Dependencies.Room.runtime)
+    annotationProcessor(Dependencies.Room.kapt)
+
+    //TODO()
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")

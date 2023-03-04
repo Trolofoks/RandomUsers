@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.honey.randomusers.R
+import com.honey.randomusers.data.MainRepository
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
@@ -14,6 +15,7 @@ import kotlin.system.exitProcess
 
 //@HiltViewModel
 class MainViewModel (
+    private val mainRepository: MainRepository
     //TODO(сюдя всякие репозитории передаем)
 ) : ViewModel() {
 
@@ -72,7 +74,8 @@ class MainViewModel (
         hardCodData()
         Log.d("MyLog","view Model remake")
         viewModelScope.launch {
-
+            val result = mainRepository.saveAllSpeakers(hardCodeDataList)
+            Log.d("MyLog", "$result")
         }
     }
 

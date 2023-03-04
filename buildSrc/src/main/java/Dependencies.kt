@@ -77,6 +77,14 @@ object Dependencies {
         const val compose = "androidx.hilt:hilt-navigation-compose:$versionCompose"
     }
 
+    object Room{
+        const val version = "2.5.0"
+
+        const val runtime = "androidx.room:room-runtime:$version"
+        const val ktx = "androidx.room:room-ktx:$version"
+        const val kapt = "androidx.room:room-compiler:$version"
+    }
+
     //тесты, вообще было бы круто их подучить а то я же вообще не знаю
     object Test {
         object Version {
