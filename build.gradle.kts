@@ -6,8 +6,7 @@ buildscript {
     dependencies {
         classpath(Dependencies.ClassPath.androidGradlePlugin)
         classpath(Dependencies.ClassPath.kotlinGradlePlugin)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0")
-//        classpath(Dependencies.ClassPath.daggerGradlePlugin)
+        classpath(Dependencies.ClassPath.daggerGradlePlugin)
     }
 }
 
@@ -16,4 +15,5 @@ tasks{
         delete(rootProject.buildDir)
     }
 }
+
 

@@ -2,7 +2,7 @@ plugins {
     id (Dependencies.Plugins.application)
     id (Dependencies.Plugins.kotlinAndroid)
     id (Dependencies.Plugins.kotlinKapt)
-//    id (Dependencies.Plugins.hilt)
+    id (Dependencies.Plugins.hilt)
 }
 
 android {
@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
 
     implementation(Dependencies.Core.coreKts)
     implementation(Dependencies.Core.appCompat)
@@ -69,9 +70,9 @@ dependencies {
 //    implementation(Dependencies.Retrofit.retrofit)
 //    implementation(Dependencies.Retrofit.retrofitConverterGson)
 
-//    implementation(Dependencies.Hilt.android)
-//    implementation(Dependencies.Hilt.compiler)
-//    implementation(Dependencies.Hilt.compose)
+    implementation(Dependencies.Hilt.android)
+    implementation(Dependencies.Hilt.compiler)
+    implementation(Dependencies.Hilt.compose)
 
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.roboeletric)
@@ -82,6 +83,6 @@ dependencies {
     androidTestImplementation(Dependencies.Test.composeJunit)
 }
 
-//kapt{
-//    correctErrorTypes = true
-//}
+kapt{
+    correctErrorTypes = true
+}

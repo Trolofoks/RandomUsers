@@ -1,11 +1,11 @@
-package com.honey.data.intenal.mainstorage.database
+package com.honey.data.internal.mainstorage.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.honey.data.intenal.Constance
-import com.honey.data.intenal.mainstorage.Dao
+import com.honey.data.internal.Constance
+import com.honey.data.internal.mainstorage.Dao
 
 @Database(entities = [MainDatabase::class], version = 1)
 abstract class MainDatabase : RoomDatabase() {

@@ -68,6 +68,7 @@ object Dependencies {
         const val retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$version"
     }
 
+
     object Hilt {
         const val version = "2.45"
         const val versionCompose = "1.0.0"
@@ -85,7 +86,7 @@ object Dependencies {
         const val kapt = "androidx.room:room-compiler:$version"
     }
 
-    //тесты, вообще было бы круто их подучить а то я же вообще не знаю
+    //тесты, вообще было бы круто их выучить, а то я же вообще не знаю их
     object Test {
         object Version {
             const val junit = "1.1.1"

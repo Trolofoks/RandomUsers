@@ -35,12 +35,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":app"))
 
     implementation(Dependencies.Room.kapt)
     implementation(Dependencies.Room.ktx)
     implementation(Dependencies.Room.runtime)
-    annotationProcessor(Dependencies.Room.kapt)
+//    annotationProcessor(Dependencies.Room.kapt)
 
     //TODO()
     implementation("androidx.core:core-ktx:1.7.0")

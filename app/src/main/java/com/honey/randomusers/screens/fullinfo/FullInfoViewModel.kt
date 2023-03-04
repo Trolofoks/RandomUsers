@@ -1,17 +1,21 @@
 package com.honey.randomusers.screens.fullinfo
 
 import androidx.lifecycle.ViewModel
+import com.honey.data.repository.MainRepository
 import com.honey.randomusers.R
 import com.honey.randomusers.screens.fullinfo.model.FullEvent
 import com.honey.randomusers.screens.fullinfo.model.FullViewState
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class FullInfoViewModel (
-
+@HiltViewModel
+class FullInfoViewModel @Inject constructor(
+    private val mainRepository: MainRepository
 ) : ViewModel(){
 
     private val _fullViewState = MutableStateFlow<FullViewState>(FullViewState.Loading)

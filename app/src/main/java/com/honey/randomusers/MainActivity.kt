@@ -17,7 +17,9 @@ import com.honey.randomusers.screens.main.MainScreen
 import com.honey.randomusers.screens.main.MainViewModel
 import com.honey.randomusers.screens.main.view.fullscreen.MainViewFullInfo
 import com.honey.randomusers.ui.theme.RandomUsersTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

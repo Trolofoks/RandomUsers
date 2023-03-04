@@ -1,16 +1,16 @@
-package com.honey.data.intenal.mainstorage.model
+package com.honey.data.internal.mainstorage.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.honey.randomusers.R
+import com.honey.data.internal.Constance
 
-@Entity
+@Entity(tableName = Constance.Name.SPEAKER_TABLE)
 data class SpeakerItem(
     @PrimaryKey(autoGenerate = false)
     val id : Int,
     @ColumnInfo
-    val imageId: Int = R.drawable.img_noimg,
+    val imageId: Int = 123,
     @ColumnInfo
     val date: Int = 1,
     @ColumnInfo
