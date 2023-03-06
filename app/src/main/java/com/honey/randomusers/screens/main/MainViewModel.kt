@@ -8,6 +8,8 @@ import com.honey.data.repository.MainRepository
 import com.honey.randomusers.R
 import com.honey.randomusers.extensions.data.fromAppToData
 import com.honey.randomusers.extensions.data.fromAppToDataList
+import com.honey.randomusers.extensions.data.fromDataToApp
+import com.honey.randomusers.extensions.data.fromDataToAppList
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
@@ -76,9 +78,14 @@ class MainViewModel @Inject constructor(
 
     init {
         hardCodData()
+        Log.d("MyLog", "hello")
+
         viewModelScope.launch {
             val result = mainRepository.saveAllSpeakers(fromAppToDataList(hardCodeDataList))
-            Log.d("MyLog", "$result")
+            Log.d("MyLog", "saved result $result")
+
+            val allSpeakers = mainRepository.getAllSpeakers()?.let { fromDataToAppList(it) }
+            Log.d("MyLog", "all Speakers from Room $allSpeakers")
         }
     }
 

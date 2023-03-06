@@ -6,8 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.honey.data.internal.Constance
 import com.honey.data.internal.mainstorage.Dao
+import com.honey.data.internal.mainstorage.model.SpeakerItem
 
-@Database(entities = [MainDatabase::class], version = 1)
+@Database(entities = [SpeakerItem::class], version = 1)
 abstract class MainDatabase : RoomDatabase() {
     abstract fun getDao(): Dao
     companion object{
@@ -19,5 +20,4 @@ abstract class MainDatabase : RoomDatabase() {
             ).build()
         }
     }
-
 }

@@ -8,7 +8,8 @@ class MainRepository(
     private val database: MainDatabase
 ) {
      suspend fun saveAllSpeakers(speakers: List<SpeakerItem>): Boolean {
-        return database.getDao().insertAllSpeakers(speakers)
+         database.getDao().insertAllSpeakers(speakers)
+         return true
     }
 
     suspend fun getAllSpeakers(): List<SpeakerItem>? {

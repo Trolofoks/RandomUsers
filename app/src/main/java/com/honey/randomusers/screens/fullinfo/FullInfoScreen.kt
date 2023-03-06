@@ -11,7 +11,7 @@ import com.honey.randomusers.screens.fullinfo.view.FullViewMain
 @Composable
 fun FullInfoScreen(
     navController: NavController,
-    viewModel: FullInfoViewModel = FullInfoViewModel(),
+    viewModel: FullInfoViewModel,
     item: String
 ){
     val viewState = viewModel.fullViewState.collectAsState()

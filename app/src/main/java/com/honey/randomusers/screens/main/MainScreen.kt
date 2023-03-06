@@ -24,7 +24,7 @@ import com.honey.randomusers.screens.main.view.fullscreen.MainViewSureExit
 internal fun MainScreen(
     navController: NavController,
 //    router: Router,
-    mainViewModel: MainViewModel = MainViewModel()
+    mainViewModel: MainViewModel
 ){
     val viewState = mainViewModel.mainViewState.collectAsState()
     val items = listOf(Screen.Main, Screen.Full)

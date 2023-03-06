@@ -46,6 +46,14 @@ android {
     }
 }
 
+//это говнище убирает дубликаты, звучит как ужаснейший костыль, но что поделать. Не мы такие, жизнь такая
+configurations {
+    create("cleanedAnnotations")
+    implementation {
+        exclude(group = "com.intellij", module = "annotations")
+    }
+}
+
 dependencies {
     implementation(project(":data"))
 
@@ -71,8 +79,12 @@ dependencies {
 //    implementation(Dependencies.Retrofit.retrofitConverterGson)
 
     implementation(Dependencies.Hilt.android)
-    implementation(Dependencies.Hilt.compiler)
+    kapt(Dependencies.Hilt.compiler)
     implementation(Dependencies.Hilt.compose)
+
+    implementation(Dependencies.Room.compiler)
+//    implementation(Dependencies.Room.ktx)
+    implementation(Dependencies.Room.runtime)
 
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.roboeletric)
@@ -82,6 +94,8 @@ dependencies {
     androidTestImplementation(Dependencies.Test.espressoCore)
     androidTestImplementation(Dependencies.Test.composeJunit)
 }
+
+
 
 kapt{
     correctErrorTypes = true

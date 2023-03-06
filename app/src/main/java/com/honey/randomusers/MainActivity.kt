@@ -3,6 +3,7 @@ package com.honey.randomusers
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,11 +22,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    val viewModel : MainViewModel by viewModels()
+    val fullViewModel: FullInfoViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel = viewModel<MainViewModel>()
-            val fullViewModel = viewModel<FullInfoViewModel>()
             RandomUsersTheme {
                 Surface(
                     color = MaterialTheme.colors.background

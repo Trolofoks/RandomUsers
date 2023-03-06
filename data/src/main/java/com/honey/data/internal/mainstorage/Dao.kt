@@ -7,7 +7,7 @@ import com.honey.data.internal.mainstorage.model.SpeakerItem
 @androidx.room.Dao
 interface Dao {
     @Insert
-    suspend fun insertAllSpeakers(items: List<SpeakerItem>): Boolean
+    suspend fun insertAllSpeakers(items: List<SpeakerItem>)
 
     @Query("SELECT * FROM speakerTable")
     suspend fun getAllSpeakers() : List<SpeakerItem>?
