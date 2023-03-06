@@ -2,6 +2,7 @@ object Dependencies {
 
     object Plugins {
         const val application = "com.android.application"
+        const val library = "com.android.library"
         const val kotlinAndroid = "org.jetbrains.kotlin.android"
         const val kotlinKapt = "org.jetbrains.kotlin.kapt"
         const val hilt = "com.google.dagger.hilt.android"
@@ -68,6 +69,7 @@ object Dependencies {
         const val retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$version"
     }
 
+
     object Hilt {
         const val version = "2.45"
         const val versionCompose = "1.0.0"
@@ -82,10 +84,10 @@ object Dependencies {
 
         const val runtime = "androidx.room:room-runtime:$version"
         const val ktx = "androidx.room:room-ktx:$version"
-        const val kapt = "androidx.room:room-compiler:$version"
+        const val compiler = "androidx.room:room-compiler:$version"
     }
 
-    //тесты, вообще было бы круто их подучить а то я же вообще не знаю
+    //тесты, вообще было бы круто их выучить, а то я же вообще не знаю их
     object Test {
         object Version {
             const val junit = "1.1.1"

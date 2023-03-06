@@ -1,22 +1,28 @@
 package com.honey.randomusers.screens.main
 
 import android.util.Log
+import androidx.constraintlayout.widget.ConstraintSet.Transform
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.honey.data.repository.MainRepository
 import com.honey.randomusers.R
-import com.honey.randomusers.data.MainRepository
+import com.honey.randomusers.extensions.data.fromAppToData
+import com.honey.randomusers.extensions.data.fromAppToDataList
+import com.honey.randomusers.extensions.data.fromDataToApp
+import com.honey.randomusers.extensions.data.fromDataToAppList
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.system.exitProcess
 
-//@HiltViewModel
-class MainViewModel (
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
-    //TODO(сюдя всякие репозитории передаем)
 ) : ViewModel() {
 
     private val _mainViewState = MutableStateFlow<MainViewState>(MainViewState.Loading)
@@ -72,10 +78,14 @@ class MainViewModel (
 
     init {
         hardCodData()
-        Log.d("MyLog","view Model remake")
+        Log.d("MyLog", "hello")
+
         viewModelScope.launch {
-            val result = mainRepository.saveAllSpeakers(hardCodeDataList)
-            Log.d("MyLog", "$result")
+            val result = mainRepository.saveAllSpeakers(fromAppToDataList(hardCodeDataList))
+            Log.d("MyLog", "saved result $result")
+
+            val allSpeakers = mainRepository.getAllSpeakers()?.let { fromDataToAppList(it) }
+            Log.d("MyLog", "all Speakers from Room $allSpeakers")
         }
     }
 

@@ -2,7 +2,7 @@ plugins {
     id (Dependencies.Plugins.application)
     id (Dependencies.Plugins.kotlinAndroid)
     id (Dependencies.Plugins.kotlinKapt)
-//    id (Dependencies.Plugins.hilt)
+    id (Dependencies.Plugins.hilt)
 }
 
 android {
@@ -46,7 +46,16 @@ android {
     }
 }
 
+//это говнище убирает дубликаты, звучит как ужаснейший костыль, но что поделать. Не мы такие, жизнь такая
+configurations {
+    create("cleanedAnnotations")
+    implementation {
+        exclude(group = "com.intellij", module = "annotations")
+    }
+}
+
 dependencies {
+    implementation(project(":data"))
 
     implementation(Dependencies.Core.coreKts)
     implementation(Dependencies.Core.appCompat)
@@ -69,9 +78,13 @@ dependencies {
 //    implementation(Dependencies.Retrofit.retrofit)
 //    implementation(Dependencies.Retrofit.retrofitConverterGson)
 
-//    implementation(Dependencies.Hilt.android)
-//    implementation(Dependencies.Hilt.compiler)
-//    implementation(Dependencies.Hilt.compose)
+    implementation(Dependencies.Hilt.android)
+    kapt(Dependencies.Hilt.compiler)
+    implementation(Dependencies.Hilt.compose)
+
+    implementation(Dependencies.Room.compiler)
+//    implementation(Dependencies.Room.ktx)
+    implementation(Dependencies.Room.runtime)
 
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.roboeletric)
@@ -82,6 +95,8 @@ dependencies {
     androidTestImplementation(Dependencies.Test.composeJunit)
 }
 
-//kapt{
-//    correctErrorTypes = true
-//}
+
+
+kapt{
+    correctErrorTypes = true
+}
