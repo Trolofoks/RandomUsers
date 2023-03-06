@@ -1,14 +1,11 @@
 package com.honey.randomusers.screens.main
 
 import android.util.Log
-import androidx.constraintlayout.widget.ConstraintSet.Transform
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.honey.data.repository.MainRepository
 import com.honey.randomusers.R
-import com.honey.randomusers.extensions.data.fromAppToData
 import com.honey.randomusers.extensions.data.fromAppToDataList
-import com.honey.randomusers.extensions.data.fromDataToApp
 import com.honey.randomusers.extensions.data.fromDataToAppList
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
@@ -32,7 +29,7 @@ class MainViewModel @Inject constructor(
 
     private val hardCodeDataList = listOf(
         SpeakerItemModel(
-            id = 1,
+            id = 0,
             imageId = (R.drawable.img_man_one),
             date = 5,
             timeZone = "20:00 - 21:00",
@@ -41,7 +38,7 @@ class MainViewModel @Inject constructor(
             inFav = false
         ),
         SpeakerItemModel(
-            id = 2,
+            id = 1,
             imageId = (R.drawable.img_man_two),
             date = 5,
             timeZone = "19:00 - 20:00",
@@ -50,7 +47,7 @@ class MainViewModel @Inject constructor(
             inFav = false
         ),
         SpeakerItemModel(
-            id = 3,
+            id = 2,
             imageId = (R.drawable.img_man_three),
             date = 7,
             timeZone = "20:00 - 21:00",
@@ -58,7 +55,7 @@ class MainViewModel @Inject constructor(
             text = "Doklad: just test text just test text just test text just test text just test text",
             inFav = false
         ),SpeakerItemModel(
-            id = 4,
+            id = 3,
             imageId = (R.drawable.img_man_four),
             date = 7,
             timeZone = "20:00 - 21:00",
@@ -66,7 +63,7 @@ class MainViewModel @Inject constructor(
             text = "Doklad: loooong wordsssss tessssst",
             inFav = false
         ),SpeakerItemModel(
-            id = 5,
+            id = 4,
             imageId = (R.drawable.img_man_five),
             date = 10,
             timeZone = "20:00 - 21:00",
@@ -77,16 +74,7 @@ class MainViewModel @Inject constructor(
     )
 
     init {
-        hardCodData()
-        Log.d("MyLog", "hello")
 
-        viewModelScope.launch {
-            val result = mainRepository.saveAllSpeakers(fromAppToDataList(hardCodeDataList))
-            Log.d("MyLog", "saved result $result")
-
-            val allSpeakers = mainRepository.getAllSpeakers()?.let { fromDataToAppList(it) }
-            Log.d("MyLog", "all Speakers from Room $allSpeakers")
-        }
     }
 
 
@@ -109,6 +97,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.OnAddFavClicked -> {performFavoriteClick(event.itemId, event.newValue)}
             is MainEvent.SearchEnter -> {performSearchEnter(event.searchText)}
             is MainEvent.OnBackPress -> {performSureForExit()}
+            is MainEvent.ReloadPage -> {performReloadPage(event)}
             else ->{}
         }
     }
@@ -131,6 +120,7 @@ class MainViewModel @Inject constructor(
 
     private fun reduce(event: MainEvent, currentState: MainViewState.Loading){
         when(event){
+            MainEvent.ReloadPage -> {performReloadPage(event)}
             else ->{}
         }
     }
@@ -219,11 +209,38 @@ class MainViewModel @Inject constructor(
         )
     }
 
+    private fun performReloadPage(event: MainEvent){
+        viewModelScope.launch {
+            if (checkIfSpeakerExists()){
+                getAllSpeakers()?.let { setDisplayData(it) }
+            }else {
+                saveAllSpeakers(hardCodeDataList)
+                getAllSpeakers()?.let { setDisplayData(it) }
+            }
+        }
+    }
 
+    private suspend fun checkIfSpeakerExists(): Boolean{
+        val result = (mainRepository.getSpeakerById(0) != null)
+        Log.d("MyLog", "check speaker exist $result")
+        return result
+    }
 
-    private fun hardCodData(){
+    private suspend fun saveAllSpeakers(items: List<SpeakerItemModel>) : Boolean {
+        val result = mainRepository.saveAllSpeakers(fromAppToDataList(items))
+        Log.d("MyLog", "save all speakers $result")
+        return result
+    }
+
+    private suspend fun getAllSpeakers(): List<SpeakerItemModel>? {
+        val result = mainRepository.getAllSpeakers()?.let { fromDataToAppList(it) }
+        Log.d("MyLog", "all speakers get $result")
+        return result
+    }
+
+    private fun setDisplayData(items: List<SpeakerItemModel>){
         _mainViewState.value = MainViewState.Display(
-            items = hardCodeDataList,
+            items = items,
             favItems = favorites.toList()
         )
 

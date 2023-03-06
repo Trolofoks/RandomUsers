@@ -15,10 +15,7 @@ import com.honey.randomusers.navigation.Router
 import com.honey.randomusers.navigation.Screen
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
-import com.honey.randomusers.screens.main.view.fullscreen.MainViewDisplay
-import com.honey.randomusers.screens.main.view.fullscreen.MainViewFullInfo
-import com.honey.randomusers.screens.main.view.fullscreen.MainViewSearch
-import com.honey.randomusers.screens.main.view.fullscreen.MainViewSureExit
+import com.honey.randomusers.screens.main.view.fullscreen.*
 
 @Composable
 internal fun MainScreen(
@@ -64,6 +61,9 @@ internal fun MainScreen(
                 },
                 onBackPress = {
                     mainViewModel.obtainEvent(MainEvent.OnBackPress)
+                },
+                onRefresh = {
+                    mainViewModel.obtainEvent(MainEvent.ReloadPage)
                 }
             )
         }
@@ -95,7 +95,13 @@ internal fun MainScreen(
                 }
             )
         }
-        is MainViewState.Loading -> {}
+        is MainViewState.Loading -> {
+            MainViewLoading(
+                response = {
+                    mainViewModel.obtainEvent(MainEvent.ReloadPage)
+                }
+            )
+        }
         is MainViewState.Error -> {}
 
         else -> {}

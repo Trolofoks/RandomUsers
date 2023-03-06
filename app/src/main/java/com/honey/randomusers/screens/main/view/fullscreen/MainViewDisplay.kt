@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -26,6 +27,7 @@ import com.honey.randomusers.screens.main.keyboardAsState
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
 import com.honey.randomusers.screens.main.view.FavoriteCardView
+import com.honey.randomusers.screens.main.view.part.RefreshCardView
 import com.honey.randomusers.screens.main.view.part.SearchFieldView
 import com.honey.randomusers.screens.main.view.part.SpeakerCardView
 
@@ -36,7 +38,8 @@ fun MainViewDisplay(
     onCardClicked: ((cardModel: SpeakerItemModel) -> Unit)? = null,
     onFavClicked: ((itemId: Int, newValue: Boolean) -> Unit)? = null,
     onSearch: ((search: String)-> Unit)? = null,
-    onBackPress: (()-> Unit)? = null
+    onBackPress: (()-> Unit)? = null,
+    onRefresh: (()-> Unit)? = null
 ){
 
     BackHandler {
@@ -48,8 +51,13 @@ fun MainViewDisplay(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.background)
+            .background(MaterialTheme.colors.background),
+        contentAlignment = Alignment.BottomEnd,
+
     ){
+        if (viewState.items.isEmpty()){
+            //TODO(Failed to Load add)
+        }
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
@@ -94,6 +102,9 @@ fun MainViewDisplay(
                     }
                 }
             }
+        }
+        RefreshCardView(){
+            onRefresh?.invoke()
         }
     }
 }

@@ -8,15 +8,15 @@ class MainRepository(
     private val database: MainDatabase
 ) {
      suspend fun saveAllSpeakers(speakers: List<SpeakerItem>): Boolean {
-         database.getDao().insertAllSpeakers(speakers)
-         return true
+         val countSavedUsers = database.getDao().insertAllSpeakers(speakers)
+         return (countSavedUsers.size == speakers.size)
     }
 
     suspend fun getAllSpeakers(): List<SpeakerItem>? {
         return database.getDao().getAllSpeakers()
     }
 
-    suspend fun getSpeakerById(id: Int): SpeakerItem {
+    suspend fun getSpeakerById(id: Int): SpeakerItem? {
         //TODO("add get image from URL")
         return database.getDao().getSpeakerById(id)
     }

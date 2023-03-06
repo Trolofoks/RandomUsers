@@ -1,6 +1,7 @@
 package com.honey.randomusers.screens.main.model
 
 sealed class MainEvent {
+    object ReloadPage: MainEvent()
     object ShowHello : MainEvent()
     object OnBackPress: MainEvent()
     data class SureToExit(val response: Boolean): MainEvent()
