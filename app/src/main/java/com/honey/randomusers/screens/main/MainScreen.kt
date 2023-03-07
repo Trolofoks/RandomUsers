@@ -69,7 +69,7 @@ internal fun MainScreen(
         }
         is MainViewState.FullInfo ->{
 
-            navController.navigate("full/model123")
+            navController.navigate("full/${state.item.id}")
 
 //            MainViewFullInfo(model = state.item, onExit = {
 //                mainViewModel.obtainEvent(MainEvent.OnBackPress)
@@ -102,7 +102,6 @@ internal fun MainScreen(
                 }
             )
         }
-        is MainViewState.Error -> {}
 
         else -> {}
     }

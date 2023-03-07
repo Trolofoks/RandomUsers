@@ -26,6 +26,8 @@ fun FullInfoScreen(
             )
         }
         is FullViewState.Loading -> {
+            viewModel.obtainEvent(FullEvent.OnGetId(item.toInt()))
+
             Text(text = item)
         }
         is FullViewState.FullScreenImage -> {

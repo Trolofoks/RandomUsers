@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
             speaker = "Hello Third",
             text = "Doklad: just test text just test text just test text just test text just test text",
             inFav = false
-        ),SpeakerItemModel(
+        ), SpeakerItemModel(
             id = 3,
             imageId = (R.drawable.img_man_four),
             date = 7,
@@ -62,7 +62,7 @@ class MainViewModel @Inject constructor(
             speaker = "Hello Fourth",
             text = "Doklad: loooong wordsssss tessssst",
             inFav = false
-        ),SpeakerItemModel(
+        ), SpeakerItemModel(
             id = 4,
             imageId = (R.drawable.img_man_five),
             date = 10,
@@ -73,37 +73,43 @@ class MainViewModel @Inject constructor(
         )
     )
 
-    init {
-
-    }
-
-
     //тут мы исходя из стейта отправляем Event(действие пользователя) куда нужно
-    fun obtainEvent(event: MainEvent){
-        when(mainViewState.value){
+    fun obtainEvent(event: MainEvent) {
+        when (mainViewState.value) {
             is MainViewState.Display -> reduce(event, mainViewState.value as MainViewState.Display)
-            is MainViewState.FullInfo -> reduce(event, mainViewState.value as MainViewState.FullInfo)
+            is MainViewState.FullInfo -> reduce(
+                event,
+                mainViewState.value as MainViewState.FullInfo
+            )
             is MainViewState.Loading -> reduce(event, mainViewState.value as MainViewState.Loading)
-            is MainViewState.Error -> reduce(event, mainViewState.value as MainViewState.Error)
             is MainViewState.Search -> reduce(event, mainViewState.value as MainViewState.Search)
             is MainViewState.OnExit -> reduce(event, mainViewState.value as MainViewState.OnExit)
         }
     }
 
-
-    private fun reduce(event: MainEvent, currentState: MainViewState.Display){
-        when (event){
-            is MainEvent.OnCardClicked -> {performItemClick(event.cardModel)}
-            is MainEvent.OnAddFavClicked -> {performFavoriteClick(event.itemId, event.newValue)}
-            is MainEvent.SearchEnter -> {performSearchEnter(event.searchText)}
-            is MainEvent.OnBackPress -> {performSureForExit()}
-            is MainEvent.ReloadPage -> {performReloadPage(event)}
-            else ->{}
+    private fun reduce(event: MainEvent, currentState: MainViewState.Display) {
+        when (event) {
+            is MainEvent.OnCardClicked -> {
+                performItemClick(event.cardModel)
+            }
+            is MainEvent.OnAddFavClicked -> {
+                performFavoriteClick(event.itemId, event.newValue)
+            }
+            is MainEvent.SearchEnter -> {
+                performSearchEnter(event.searchText)
+            }
+            is MainEvent.OnBackPress -> {
+                performSureForExit()
+            }
+            is MainEvent.ReloadPage -> {
+                performReloadPage(event)
+            }
+            else -> {}
         }
     }
 
-    private fun reduce (event: MainEvent, currentState: MainViewState.OnExit){
-        when (event){
+    private fun reduce(event: MainEvent, currentState: MainViewState.OnExit) {
+        when (event) {
             is MainEvent.SureToExit -> {
                 performReallySure(event.response)
             }
@@ -111,39 +117,41 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun reduce(event:MainEvent, currentState: MainViewState.FullInfo){
-        when (event){
-            is MainEvent.OnBackPress -> {performFullInfoExit()}
+    private fun reduce(event: MainEvent, currentState: MainViewState.FullInfo) {
+        when (event) {
+            is MainEvent.OnBackPress -> {
+                performFullInfoExit()
+            }
             else -> {}
         }
     }
 
-    private fun reduce(event: MainEvent, currentState: MainViewState.Loading){
-        when(event){
-            MainEvent.ReloadPage -> {performReloadPage(event)}
-            else ->{}
-        }
-    }
-
-    private fun reduce(event: MainEvent, currentState: MainViewState.Error) {
-        when(event){
+    private fun reduce(event: MainEvent, currentState: MainViewState.Loading) {
+        when (event) {
+            MainEvent.ReloadPage -> {
+                performReloadPage(event)
+            }
             else -> {}
         }
     }
 
     private fun reduce(event: MainEvent, currentState: MainViewState.Search) {
-        when(event){
-            is MainEvent.OnCardClicked -> {performItemClick(event.cardModel)}
-            is MainEvent.SearchExit -> {performSearchExit(event.searchText)}
+        when (event) {
+            is MainEvent.OnCardClicked -> {
+                performItemClick(event.cardModel)
+            }
+            is MainEvent.SearchExit -> {
+                performSearchExit(event.searchText)
+            }
             else -> {}
         }
     }
 
-    private fun performSureForExit(){
+    private fun performSureForExit() {
         _mainViewState.value = MainViewState.OnExit
     }
 
-    private fun performItemClick(speakerModel: SpeakerItemModel){
+    private fun performItemClick(speakerModel: SpeakerItemModel) {
         _mainViewState.value = MainViewState.FullInfo(item = speakerModel)
     }
 
@@ -154,8 +162,8 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    private fun performReallySure(sure: Boolean){
-        if (sure){
+    private fun performReallySure(sure: Boolean) {
+        if (sure) {
             exitProcess(0)
         } else {
             _mainViewState.value = MainViewState.Display(
@@ -165,7 +173,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun performSearchExit(searchText: String){
+    private fun performSearchExit(searchText: String) {
 
         _mainViewState.value = MainViewState.Display(
             searchText = searchText,
@@ -174,7 +182,7 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    private fun performFullInfoExit(){
+    private fun performFullInfoExit() {
         _mainViewState.value = MainViewState.Display(
             items = hardCodeDataList,
             favItems = favorites.toList()
@@ -209,24 +217,24 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    private fun performReloadPage(event: MainEvent){
+    private fun performReloadPage(event: MainEvent) {
         viewModelScope.launch {
-            if (checkIfSpeakerExists()){
+            if (checkIfSpeakerExists()) {
                 getAllSpeakers()?.let { setDisplayData(it) }
-            }else {
+            } else {
                 saveAllSpeakers(hardCodeDataList)
                 getAllSpeakers()?.let { setDisplayData(it) }
             }
         }
     }
 
-    private suspend fun checkIfSpeakerExists(): Boolean{
+    private suspend fun checkIfSpeakerExists(): Boolean {
         val result = (mainRepository.getSpeakerById(0) != null)
         Log.d("MyLog", "check speaker exist $result")
         return result
     }
 
-    private suspend fun saveAllSpeakers(items: List<SpeakerItemModel>) : Boolean {
+    private suspend fun saveAllSpeakers(items: List<SpeakerItemModel>): Boolean {
         val result = mainRepository.saveAllSpeakers(fromAppToDataList(items))
         Log.d("MyLog", "save all speakers $result")
         return result
@@ -238,11 +246,10 @@ class MainViewModel @Inject constructor(
         return result
     }
 
-    private fun setDisplayData(items: List<SpeakerItemModel>){
+    private fun setDisplayData(items: List<SpeakerItemModel>) {
         _mainViewState.value = MainViewState.Display(
             items = items,
             favItems = favorites.toList()
         )
-
     }
 }

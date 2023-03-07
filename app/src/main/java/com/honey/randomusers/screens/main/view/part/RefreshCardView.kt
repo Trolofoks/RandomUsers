@@ -15,27 +15,22 @@ fun RefreshCardView(
     modifier: Modifier = Modifier,
     response: (() -> Unit)? = null
 ) {
-    Box(
-        contentAlignment = Alignment.Center
+    Card(
+        modifier = Modifier
+            .padding(16.dp),
+        shape = MaterialTheme.shapes.large,
+        elevation = 12.dp
     ) {
-        Card(
-            modifier = Modifier
-                .padding(16.dp)
-                .background(MaterialTheme.colors.background),
-            shape = MaterialTheme.shapes.large,
-            elevation = 8.dp
+        IconButton(
+            onClick = { response?.invoke() },
+            modifier = modifier
+                .size(64.dp)
+                .padding(8.dp)
         ) {
-            IconButton(
-                onClick = { response?.invoke() },
-                modifier = modifier
-                    .size(64.dp)
-                    .padding(8.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_loading),
-                    contentDescription = "Loading"
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.ic_loading),
+                contentDescription = "Loading"
+            )
         }
     }
 }

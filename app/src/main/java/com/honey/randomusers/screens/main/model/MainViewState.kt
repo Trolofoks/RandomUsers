@@ -15,5 +15,4 @@ sealed class MainViewState {
     ): MainViewState()
     object OnExit : MainViewState()
     object Loading : MainViewState()
-    object Error : MainViewState()
 }

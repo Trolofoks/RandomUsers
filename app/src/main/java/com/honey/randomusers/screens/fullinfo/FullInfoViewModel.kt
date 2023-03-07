@@ -1,8 +1,11 @@
 package com.honey.randomusers.screens.fullinfo
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.honey.data.repository.MainRepository
 import com.honey.randomusers.R
+import com.honey.randomusers.extensions.data.fromDataToApp
 import com.honey.randomusers.screens.fullinfo.model.FullEvent
 import com.honey.randomusers.screens.fullinfo.model.FullViewState
 import com.honey.randomusers.screens.main.model.MainViewState
@@ -11,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,7 +45,9 @@ class FullInfoViewModel @Inject constructor(
     private fun reduce(event: FullEvent, currentState: FullViewState.Loading){
         when(event){
             is FullEvent.OnBackPress -> {
-
+            }
+            is FullEvent.OnGetId -> {
+                performLoadSpeaker(event.id)
             }
             else -> {}
         }
@@ -63,5 +69,18 @@ class FullInfoViewModel @Inject constructor(
             }
             else -> {}
         }
+    }
+
+    private fun performLoadSpeaker(id: Int){
+        viewModelScope.launch {
+            val speaker = getSpeakerById(id)
+            _fullViewState.value = FullViewState.FullInfo(speaker)
+        }
+    }
+
+    private suspend fun getSpeakerById(id: Int): SpeakerItemModel{
+        val result = mainRepository.getSpeakerById(id)?.let { fromDataToApp(it) }
+        Log.d("MyLog", "get speaker by $id is $result")
+        return result!!
     }
 }
