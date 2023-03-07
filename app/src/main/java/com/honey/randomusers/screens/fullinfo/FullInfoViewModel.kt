@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FullInfoViewModel @Inject constructor(
-    private val mainRepository: MainRepository
+    private val mainRepository: MainRepository,
 ) : ViewModel(){
 
     private val _fullViewState = MutableStateFlow<FullViewState>(FullViewState.Loading)

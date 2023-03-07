@@ -18,13 +18,21 @@ fun AppNavigation(){
         startDestination = Navigation.Routes.SPEAKERS
     ) {
         composable(
-            route = Navigation.Routes.SPEAKERS,
+            route = Navigation.Routes.SPEAKERS
+        ){
+            MainScreenDestination(navController)
+        }
+        
+        composable(
+            route = Navigation.Routes.FULL_VIEW,
             arguments = listOf(navArgument(name = SPEAKER_ID){
                 type = NavType.StringType
             })
         ) {backStackEntry ->
+            //TODO("continue")
             val speakerId = requireNotNull(backStackEntry.arguments?.getString(SPEAKER_ID)) { "User id is required as an argument" }
-
+            FullInfoScreenDestination(userId = , navController = )
+            
         }
     }
 }

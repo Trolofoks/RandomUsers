@@ -7,14 +7,16 @@ import com.honey.data.repository.MainRepository
 import com.honey.randomusers.R
 import com.honey.randomusers.extensions.data.fromAppToDataList
 import com.honey.randomusers.extensions.data.fromDataToAppList
+import com.honey.randomusers.screens.main.model.MainEffect
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.contracts.Effect
 import kotlin.system.exitProcess
 
 @HiltViewModel
@@ -24,6 +26,9 @@ class MainViewModel @Inject constructor(
 
     private val _mainViewState = MutableStateFlow<MainViewState>(MainViewState.Loading)
     val mainViewState: StateFlow<MainViewState> = _mainViewState
+
+    private val _mainEffect = MutableSharedFlow<MainEffect>(replay = 1)
+    val mainEffect : SharedFlow<MainEffect> = _mainEffect.asSharedFlow()
 
     private val favorites = arrayListOf<SpeakerItemModel>()
 

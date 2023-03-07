@@ -11,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.honey.randomusers.navigation.Screen
-import com.honey.randomusers.navigation.createExternalRouter
 import com.honey.randomusers.screens.fullinfo.FullInfoScreen
 import com.honey.randomusers.screens.fullinfo.FullInfoViewModel
 import com.honey.randomusers.screens.main.MainScreen

@@ -10,21 +10,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.honey.randomusers.Constance
 import com.honey.randomusers.R
-import com.honey.randomusers.navigation.Router
 import com.honey.randomusers.navigation.Screen
+import com.honey.randomusers.screens.main.model.MainEffect
 import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.view.fullscreen.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun MainScreen(
     navController: NavController,
-//    router: Router,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    onNavigationRequested: (navigationEffect: MainEffect.Navigation.ToFullView) -> Unit
 ){
     val viewState = mainViewModel.mainViewState.collectAsState()
+    val effect = mainViewModel.mainEffect
     val items = listOf(Screen.Main, Screen.Full)
+
+    //ой сайд эффекты пошли а я их еще не знаю, неловко вышло, хотя вроде не сложно
+    LaunchedEffect(Constance.SIDE_EFFECTS_KEY){
+        effect.onEach {effect ->
+            when(effect){
+                is MainEffect.Navigation.ToFullView -> {
+                    onNavigationRequested(effect)
+                }
+            }
+        }.collect()
+
+    }
 
     Scaffold(
         topBar = {
@@ -47,6 +63,7 @@ internal fun MainScreen(
                 viewState = state,
                 onCardClicked = { item ->
                     mainViewModel.obtainEvent(MainEvent.OnCardClicked(item))
+
                 },
                 onFavClicked = { itemId, newValue ->
                     mainViewModel.obtainEvent(
@@ -68,7 +85,6 @@ internal fun MainScreen(
             )
         }
         is MainViewState.FullInfo ->{
-
             navController.navigate("full/${state.item.id}")
 
 //            MainViewFullInfo(model = state.item, onExit = {

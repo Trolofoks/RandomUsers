@@ -12,7 +12,6 @@ import com.honey.randomusers.screens.fullinfo.view.FullViewMain
 fun FullInfoScreen(
     navController: NavController,
     viewModel: FullInfoViewModel,
-    item: String
 ){
     val viewState = viewModel.fullViewState.collectAsState()
 
@@ -25,13 +24,7 @@ fun FullInfoScreen(
                 }
             )
         }
-        is FullViewState.Loading -> {
-            viewModel.obtainEvent(FullEvent.OnGetId(item.toInt()))
-
-            Text(text = item)
-        }
-        is FullViewState.FullScreenImage -> {
-
-        }
+        is FullViewState.Loading -> {}
+        is FullViewState.FullScreenImage -> {}
     }
 }
