@@ -73,10 +73,11 @@ fun MainViewDisplay(
                 }
             )
 
-            if (viewState.favItems.isNotEmpty()){
+            val favorites = viewState.items.filter { it.inFav }.map { it }
+            if (favorites.isNotEmpty()){
                 Text(text = "Favorite")
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
-                    itemsIndexed(viewState.favItems){index, item ->
+                    itemsIndexed(favorites){index, item ->
                         FavoriteCardView(
                             model = item,
                             onCardClicked = ({ onCardClicked?.invoke(it) })

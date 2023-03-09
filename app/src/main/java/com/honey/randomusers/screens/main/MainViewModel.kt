@@ -12,11 +12,10 @@ import com.honey.randomusers.screens.main.model.MainEvent
 import com.honey.randomusers.screens.main.model.MainViewState
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.contracts.Effect
 import kotlin.system.exitProcess
 
 @HiltViewModel
@@ -27,68 +26,30 @@ class MainViewModel @Inject constructor(
     private val _mainViewState = MutableStateFlow<MainViewState>(MainViewState.Loading)
     val mainViewState: StateFlow<MainViewState> = _mainViewState
 
-    private val _mainEffect = MutableSharedFlow<MainEffect>(replay = 1)
+    private val _mainEffect = MutableSharedFlow<MainEffect>(extraBufferCapacity = 1)
     val mainEffect : SharedFlow<MainEffect> = _mainEffect.asSharedFlow()
 
-    private val favorites = arrayListOf<SpeakerItemModel>()
-
-    private val hardCodeDataList = listOf(
-        SpeakerItemModel(
-            id = 0,
-            imageId = (R.drawable.img_man_one),
-            date = 5,
-            timeZone = "20:00 - 21:00",
-            speaker = "Hello Speaker",
-            text = "Doklad: hahahahahahahah ah ha hahahahahahahahahahahaahhahahaha hahahah",
-            inFav = false
-        ),
-        SpeakerItemModel(
-            id = 1,
-            imageId = (R.drawable.img_man_two),
-            date = 5,
-            timeZone = "19:00 - 20:00",
-            speaker = "Hello Second",
-            text = "Doklad: some text some text some text some text some text some text some text some text",
-            inFav = false
-        ),
-        SpeakerItemModel(
-            id = 2,
-            imageId = (R.drawable.img_man_three),
-            date = 7,
-            timeZone = "20:00 - 21:00",
-            speaker = "Hello Third",
-            text = "Doklad: just test text just test text just test text just test text just test text",
-            inFav = false
-        ), SpeakerItemModel(
-            id = 3,
-            imageId = (R.drawable.img_man_four),
-            date = 7,
-            timeZone = "20:00 - 21:00",
-            speaker = "Hello Fourth",
-            text = "Doklad: loooong wordsssss tessssst",
-            inFav = false
-        ), SpeakerItemModel(
-            id = 4,
-            imageId = (R.drawable.img_man_five),
-            date = 10,
-            timeZone = "20:00 - 21:00",
-            speaker = "Hello Fifth",
-            text = "Doklad: verrrrrrrrrrryyyyyyyy looooooooonnnngggggg wooooooordddddssssss",
-            inFav = false
-        )
-    )
+    init {
+        Log.d("MyLog", "MainViewModel Create ${R.drawable.img_noimg}")
+    }
 
     //тут мы исходя из стейта отправляем Event(действие пользователя) куда нужно
     fun obtainEvent(event: MainEvent) {
         when (mainViewState.value) {
             is MainViewState.Display -> reduce(event, mainViewState.value as MainViewState.Display)
-            is MainViewState.FullInfo -> reduce(
-                event,
-                mainViewState.value as MainViewState.FullInfo
-            )
             is MainViewState.Loading -> reduce(event, mainViewState.value as MainViewState.Loading)
             is MainViewState.Search -> reduce(event, mainViewState.value as MainViewState.Search)
             is MainViewState.OnExit -> reduce(event, mainViewState.value as MainViewState.OnExit)
+            is MainViewState.FavLimit -> reduce(event, mainViewState.value as MainViewState.FavLimit)
+        }
+    }
+
+    private fun reduce(event: MainEvent, currentState: MainViewState.FavLimit) {
+        when (event){
+            is MainEvent.OnBackPress -> {
+                performLoadPage()
+            }
+            else -> {}
         }
     }
 
@@ -98,7 +59,7 @@ class MainViewModel @Inject constructor(
                 performItemClick(event.cardModel)
             }
             is MainEvent.OnAddFavClicked -> {
-                performFavoriteClick(event.itemId, event.newValue)
+                performFavoriteClick(event.itemId, event.newValue, currentState)
             }
             is MainEvent.SearchEnter -> {
                 performSearchEnter(event.searchText)
@@ -107,7 +68,7 @@ class MainViewModel @Inject constructor(
                 performSureForExit()
             }
             is MainEvent.ReloadPage -> {
-                performReloadPage(event)
+                performReloadPage(currentState)
             }
             else -> {}
         }
@@ -122,19 +83,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun reduce(event: MainEvent, currentState: MainViewState.FullInfo) {
-        when (event) {
-            is MainEvent.OnBackPress -> {
-                performFullInfoExit()
-            }
-            else -> {}
-        }
-    }
-
     private fun reduce(event: MainEvent, currentState: MainViewState.Loading) {
         when (event) {
             MainEvent.ReloadPage -> {
-                performReloadPage(event)
+                performLoadPage()
             }
             else -> {}
         }
@@ -154,107 +106,105 @@ class MainViewModel @Inject constructor(
 
     private fun performSureForExit() {
         _mainViewState.value = MainViewState.OnExit
+
+    }
+
+    private fun performFavLimit(){
+        _mainViewState.value = MainViewState.FavLimit
     }
 
     private fun performItemClick(speakerModel: SpeakerItemModel) {
-        _mainViewState.value = MainViewState.FullInfo(item = speakerModel)
+        _mainEffect.tryEmit(MainEffect.Navigation.ToFullView(speakerModel.id))
     }
 
     private fun performSearchEnter(searchText: String) {
-        _mainViewState.value = MainViewState.Search(
-            searchText = searchText,
-            items = hardCodeDataList
-        )
+        viewModelScope.launch {
+            _mainViewState.value = MainViewState.Search(
+                searchText = searchText,
+                items = getAllSpeakers()?: listOf()
+            )
+        }
     }
 
     private fun performReallySure(sure: Boolean) {
         if (sure) {
             exitProcess(0)
         } else {
-            _mainViewState.value = MainViewState.Display(
-                items = hardCodeDataList,
-                favItems = favorites.toList()
-            )
+            performLoadPage()
         }
     }
 
     private fun performSearchExit(searchText: String) {
-
-        _mainViewState.value = MainViewState.Display(
-            searchText = searchText,
-            items = hardCodeDataList,
-            favItems = favorites.toList()
-        )
+        performLoadPage(searchText)
     }
 
-    private fun performFullInfoExit() {
-        _mainViewState.value = MainViewState.Display(
-            items = hardCodeDataList,
-            favItems = favorites.toList()
-        )
-    }
+    private fun performFavoriteClick(itemId: Int, newValue: Boolean, state: MainViewState.Display) {
+        val favorites = state.items.filter { it.inFav }.map { it.id }
 
-    private fun performFavoriteClick(itemId: Int, newValue: Boolean) {
-        val itemExists = favorites.any { it.id == itemId }
-        when {
-            newValue && !itemExists -> {
-                if (favorites.size >= 3) {
-                    Log.d("MyLog", "limit 3")
-                    TODO()
-                } else {
-                    hardCodeDataList.find { it.id == itemId }?.let { favorites.add(it) }
-                }
+        if (favorites.size <= 2 || !newValue){
+            viewModelScope.launch {
+                setInFavById(itemId, newValue)
+                performLoadPage()
             }
-            !newValue && itemExists -> {
-                favorites.removeIf { it.id == itemId }
-            }
-            newValue && itemExists -> {
-                Log.d("MyLog", "add but exist")
-            }
-            else -> {
-                Log.d("MyLog", "remove but not exist")
-            }
+        } else {
+            performFavLimit()
         }
-
-        _mainViewState.value = MainViewState.Display(
-            items = hardCodeDataList,
-            favItems = favorites.toList()
-        )
     }
 
-    private fun performReloadPage(event: MainEvent) {
+    private fun performLoadPage(searchText: String = "") {
         viewModelScope.launch {
             if (checkIfSpeakerExists()) {
-                getAllSpeakers()?.let { setDisplayData(it) }
+                getAllSpeakers()?.let { setDisplayData(it, searchText) }
             } else {
-                saveAllSpeakers(hardCodeDataList)
-                getAllSpeakers()?.let { setDisplayData(it) }
+                getSpeakersFromRemote()
             }
+        }
+    }
+    private fun performReloadPage(state : MainViewState.Display) {
+        viewModelScope.launch {
+            getSpeakersFromRemote()
+        }
+    }
+
+    private suspend fun getSpeakersFromRemote(){
+        deleteAllSpeakers()
+        val speakers = getAllSpeakers()
+        Log.d("MyLog","$speakers")
+        if (speakers != null){
+            saveAllSpeakers(speakers)
+            setDisplayData(speakers)
         }
     }
 
     private suspend fun checkIfSpeakerExists(): Boolean {
-        val result = (mainRepository.getSpeakerById(0) != null)
-        Log.d("MyLog", "check speaker exist $result")
+        val result = (mainRepository.getSpeakerById(1) != null)
         return result
     }
 
     private suspend fun saveAllSpeakers(items: List<SpeakerItemModel>): Boolean {
         val result = mainRepository.saveAllSpeakers(fromAppToDataList(items))
-        Log.d("MyLog", "save all speakers $result")
         return result
     }
 
     private suspend fun getAllSpeakers(): List<SpeakerItemModel>? {
         val result = mainRepository.getAllSpeakers()?.let { fromDataToAppList(it) }
-        Log.d("MyLog", "all speakers get $result")
         return result
     }
 
-    private fun setDisplayData(items: List<SpeakerItemModel>) {
+    private suspend fun deleteAllSpeakers(): Boolean{
+        val result = mainRepository.deleteLocalData()
+        return result
+    }
+
+    private suspend fun setInFavById(id: Int, inFav: Boolean): Boolean {
+        val result = mainRepository.setInFavById(id, inFav)
+        return result
+    }
+
+    private fun setDisplayData(items: List<SpeakerItemModel>, searchText: String = "") {
         _mainViewState.value = MainViewState.Display(
+            searchText = searchText,
             items = items,
-            favItems = favorites.toList()
         )
     }
 }

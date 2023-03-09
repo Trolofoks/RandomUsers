@@ -1,5 +1,6 @@
 package com.honey.randomusers.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -26,12 +27,15 @@ fun AppNavigation(){
         composable(
             route = Navigation.Routes.FULL_VIEW,
             arguments = listOf(navArgument(name = SPEAKER_ID){
-                type = NavType.StringType
+                type = NavType.IntType
             })
         ) {backStackEntry ->
-            //TODO("continue")
-            val speakerId = requireNotNull(backStackEntry.arguments?.getString(SPEAKER_ID)) { "User id is required as an argument" }
-            FullInfoScreenDestination(userId = , navController = )
+            val speakerId = requireNotNull(backStackEntry.arguments?.getInt(SPEAKER_ID)) { "User id is required as an argument" }
+
+            FullInfoScreenDestination(
+                speakerId = speakerId,
+                navController = navController
+            )
             
         }
     }

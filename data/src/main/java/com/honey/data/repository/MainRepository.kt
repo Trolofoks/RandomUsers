@@ -1,25 +1,50 @@
 package com.honey.data.repository
 
-import com.honey.data.internal.mainstorage.database.MainDatabase
+import com.honey.data.external.mainstorage.MainRemoteDataSource
+import com.honey.data.internal.mainstorage.database.MainLocalDataSource
 import com.honey.data.internal.mainstorage.model.SpeakerItem
 
 class MainRepository(
-    //TODO(external source add)
-    private val database: MainDatabase
+    private val remoteDataSource: MainRemoteDataSource,
+    private val localDataSource: MainLocalDataSource
 ) {
      suspend fun saveAllSpeakers(speakers: List<SpeakerItem>): Boolean {
-         val countSavedUsers = database.getDao().insertAllSpeakers(speakers)
+         val countSavedUsers = localDataSource.getDao().insertAllSpeakers(speakers)
          return (countSavedUsers.size == speakers.size)
     }
 
     suspend fun getAllSpeakers(): List<SpeakerItem>? {
-        return database.getDao().getAllSpeakers()
+        var speakers = localDataSource.getDao().getAllSpeakers()?: listOf()
+        if (speakers.isEmpty()){
+            speakers = remoteDataSource.getSpeakers().map {speakerModel ->
+                val dayString = speakerModel.date.substring(0, speakerModel.date.indexOf(" "))
+                SpeakerItem(
+                    id = speakerModel.id.toInt(),
+                    imageId = 2131165343,
+                    date = dayString.toInt(),
+                    timeZone = speakerModel.timeInterval,
+                    speaker = speakerModel.speaker,
+                    text = speakerModel.description,
+                    inFav = speakerModel.isFavourite
+                )
+            }
+        }
+        return speakers
     }
 
     suspend fun getSpeakerById(id: Int): SpeakerItem? {
         //TODO("add get image from URL")
-        return database.getDao().getSpeakerById(id)
+        return localDataSource.getDao().getSpeakerById(id)
     }
 
+    suspend fun deleteLocalData() : Boolean {
+        val deletedCount = localDataSource.getDao().deleteAllSpeakers()
+        return deletedCount >= 1
+    }
+
+    suspend fun setInFavById(id: Int, inFav: Boolean) : Boolean {
+        localDataSource.getDao().setFavorite(id, inFav)
+        return true
+    }
 
 }

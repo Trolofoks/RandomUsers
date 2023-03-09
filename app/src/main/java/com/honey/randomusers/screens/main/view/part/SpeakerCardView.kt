@@ -16,17 +16,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.honey.randomusers.R
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
 
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 internal fun SpeakerCardView(
     model: SpeakerItemModel,
     onCardClicked: ((cardModel: SpeakerItemModel) -> Unit)? = null,
     onFavClicked: ((itemId: Int, newValue: Boolean) -> Unit)? = null
 ) {
-    val isChecked = remember { mutableStateOf(false) }
+    val isChecked = remember { mutableStateOf(model.inFav) }
 
     Card(modifier = Modifier
         .clickable { onCardClicked?.invoke(model) }
@@ -49,7 +52,7 @@ internal fun SpeakerCardView(
                 modifier = Modifier
                     .size(64.dp)
                     .clip(shape = RoundedCornerShape(100)),
-                painter = painterResource(id = model.imageId),
+                painter = rememberImagePainter(data = "https://static.tildacdn.com/tild3432-3435-4561-b136-663134643162/photo_2021-04-16_18-.jpg",),
                 contentDescription = "Speaker",
                 contentScale = ContentScale.Crop
             )
@@ -59,7 +62,12 @@ internal fun SpeakerCardView(
                     .padding(start = 8.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = model.speaker, fontWeight = FontWeight.Bold)
+                val name = if (model.speaker.length > 23){
+                    model.speaker.substring(0..20) + "..."
+                } else {
+                    model.speaker
+                }
+                Text(text = name, fontWeight = FontWeight.Bold)
                 Text(text = model.timeZone, fontWeight = FontWeight.Bold)
                 val text = if (model.text.length > 50){
                     model.text.substring(0..50) + "..."
@@ -69,13 +77,13 @@ internal fun SpeakerCardView(
                 Text(text = text)
             }
             IconToggleButton(
-                checked = isChecked.value,
+                checked = model.inFav,
                 onCheckedChange = {newValue->
-                    isChecked.value = newValue
+//                    isChecked.value = newValue
                     onFavClicked?.invoke(model.id, newValue)
                 },
             ) {
-                if (isChecked.value) {
+                if (model.inFav) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_favorite),
                         contentDescription = "Checked"

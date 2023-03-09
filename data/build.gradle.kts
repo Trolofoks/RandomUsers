@@ -35,22 +35,14 @@ android {
 }
 
 dependencies {
-//
-//    implementation(Dependencies.Room.compiler)
-//    implementation(Dependencies.Room.ktx)
-//    implementation(Dependencies.Room.runtime)
-//    annotationProcessor(Dependencies.Room.kapt)
 
-    val room_version = "2.5.0"
+    implementation(Dependencies.Room.runtime)
+    implementation(Dependencies.Room.ktx)
+    annotationProcessor(Dependencies.Room.compiler)
+    kapt(Dependencies.Room.compiler)
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-
-    implementation("androidx.room:room-ktx:$room_version")
-
-    kapt("androidx.room:room-compiler:$room_version")
-
-
+    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Retrofit.retrofitConverterGson)
 
     //TODO()
     implementation("androidx.core:core-ktx:1.7.0")

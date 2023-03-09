@@ -1,5 +1,6 @@
 package com.honey.randomusers.screens.fullinfo.view
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,9 @@ fun FullViewMain(
     model: SpeakerItemModel,
     onExit: (() -> Unit)? = null
 ){
+
+    Log.d("MyLog", "Now you in FullViewMain")
+
     BackHandler {
         onExit?.invoke()
     }

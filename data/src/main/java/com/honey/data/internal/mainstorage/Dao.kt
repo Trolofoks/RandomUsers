@@ -15,5 +15,9 @@ interface Dao {
     @Query("SELECT * FROM speakerTable WHERE id =:id")
     suspend fun getSpeakerById(id: Int) : SpeakerItem?
 
+    @Query("DELETE FROM speakerTable")
+    suspend fun deleteAllSpeakers() : Int
 
+    @Query("UPDATE speakerTable SET inFav = :inFav WHERE id = :speakerId")
+    suspend fun setFavorite(speakerId: Int, inFav : Boolean)
 }

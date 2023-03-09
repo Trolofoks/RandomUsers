@@ -69,6 +69,12 @@ object Dependencies {
         const val retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$version"
     }
 
+    object Coil {
+        const val version = "1.4.0"
+
+        const val compose = "implementation io.coil-kt:coil-compose:$version"
+    }
+
 
     object Hilt {
         const val version = "2.45"

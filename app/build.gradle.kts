@@ -75,8 +75,8 @@ dependencies {
     implementation(Dependencies.Navigation.navigationCompose)
     implementation(Dependencies.Navigation.lifecycleViewModelCompose)
 
-//    implementation(Dependencies.Retrofit.retrofit)
-//    implementation(Dependencies.Retrofit.retrofitConverterGson)
+    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Retrofit.retrofitConverterGson)
 
     implementation(Dependencies.Hilt.android)
     kapt(Dependencies.Hilt.compiler)
