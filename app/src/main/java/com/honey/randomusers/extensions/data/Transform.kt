@@ -7,7 +7,7 @@ import com.honey.randomusers.screens.main.model.SpeakerItemModel
 fun ViewModel.fromDataToApp(speaker: SpeakerItem): SpeakerItemModel{
     return SpeakerItemModel(
         id = speaker.id,
-        imageId = speaker.imageId,
+        imageId = speaker.image,
         date = speaker.date,
         timeZone = speaker.timeZone,
         speaker = speaker.speaker,
@@ -24,7 +24,7 @@ fun ViewModel.fromDataToAppList(speakers: List<SpeakerItem>): List<SpeakerItemMo
 fun ViewModel.fromAppToData(speaker: SpeakerItemModel): SpeakerItem{
     return SpeakerItem(
         id = speaker.id,
-        imageId = speaker.imageId,
+        image = speaker.imageId,
         date = speaker.date,
         timeZone = speaker.timeZone,
         speaker = speaker.speaker,

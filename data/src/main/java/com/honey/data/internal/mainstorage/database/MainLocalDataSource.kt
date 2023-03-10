@@ -8,7 +8,7 @@ import com.honey.data.internal.Constance
 import com.honey.data.internal.mainstorage.Dao
 import com.honey.data.internal.mainstorage.model.SpeakerItem
 
-@Database(entities = [SpeakerItem::class], version = 1)
+@Database(entities = [SpeakerItem::class], version = 2)
 abstract class MainLocalDataSource : RoomDatabase() {
     abstract fun getDao(): Dao
     companion object{
@@ -17,7 +17,9 @@ abstract class MainLocalDataSource : RoomDatabase() {
                 context.applicationContext,
                 MainLocalDataSource::class.java,
                 Constance.Name.DATABASE
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 }

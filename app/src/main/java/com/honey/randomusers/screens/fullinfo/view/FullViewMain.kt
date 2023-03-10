@@ -16,9 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.honey.randomusers.R
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun FullViewMain(
     model: SpeakerItemModel,
@@ -46,7 +49,7 @@ fun FullViewMain(
                 modifier = Modifier
                     .size(320.dp)
                     .clip(shape = RoundedCornerShape(100)),
-                painter = painterResource(id = model.imageId),
+                painter = rememberImagePainter(data = model.imageId),
                 contentDescription = "Speaker Photo",
                 contentScale = ContentScale.Crop
             )

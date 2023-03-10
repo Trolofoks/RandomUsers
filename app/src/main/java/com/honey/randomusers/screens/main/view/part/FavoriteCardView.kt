@@ -52,7 +52,6 @@ internal fun FavoriteCardView(
 fun PreviewFavoriteCard(){
     FavoriteCardView(
         model = SpeakerItemModel(
-            imageId = R.drawable.img_man_one,
             date = 15,
             timeZone = "10:00-11:00",
             speaker = "Аналий Жопанов",

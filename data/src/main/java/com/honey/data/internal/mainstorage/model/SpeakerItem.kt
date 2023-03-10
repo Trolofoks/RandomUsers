@@ -10,7 +10,7 @@ data class SpeakerItem(
     @PrimaryKey(autoGenerate = false)
     val id : Int,
     @ColumnInfo
-    val imageId: Int = 123,
+    val image: String,
     @ColumnInfo
     val date: Int = 1,
     @ColumnInfo

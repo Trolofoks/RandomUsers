@@ -16,9 +16,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.honey.randomusers.R
 import com.honey.randomusers.screens.main.model.SpeakerItemModel
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun MainViewFullInfo(
     model: SpeakerItemModel,
@@ -43,8 +46,7 @@ fun MainViewFullInfo(
                 modifier = Modifier
                     .size(320.dp)
                     .clip(shape = RoundedCornerShape(100)),
-                painter = painterResource(id = model.imageId),
-                contentDescription = "Speaker Photo",
+                painter = rememberImagePainter(data = "https://static.tildacdn.com/tild3432-3435-4561-b136-663134643162/photo_2021-04-16_18-.jpg",),                contentDescription = "Speaker Photo",
                 contentScale = ContentScale.Crop
             )
             Text(text = model.speaker, style = MaterialTheme.typography.h4)
@@ -69,7 +71,6 @@ fun MainViewFullInfo(
 fun PreviewFullInfo(){
     MainViewFullInfo(
         model = SpeakerItemModel(
-            imageId = R.drawable.img_man_one,
             timeZone = "10:00-11:00",
             speaker = "Аналий Жопанов",
             text = "Доклад: А тут текста я не придумал так что пусть будет просто текст",

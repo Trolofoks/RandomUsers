@@ -20,7 +20,7 @@ class MainRepository(
                 val dayString = speakerModel.date.substring(0, speakerModel.date.indexOf(" "))
                 SpeakerItem(
                     id = speakerModel.id.toInt(),
-                    imageId = 2131165343,
+                    image = speakerModel.imageUrl,
                     date = dayString.toInt(),
                     timeZone = speakerModel.timeInterval,
                     speaker = speakerModel.speaker,
@@ -33,7 +33,6 @@ class MainRepository(
     }
 
     suspend fun getSpeakerById(id: Int): SpeakerItem? {
-        //TODO("add get image from URL")
         return localDataSource.getDao().getSpeakerById(id)
     }
 

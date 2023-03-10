@@ -1,5 +1,6 @@
 package com.honey.randomusers.screens.main.view.part
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -48,11 +49,13 @@ internal fun SpeakerCardView(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Log.d("MyLog", "${model.imageId}")
+
             Image(
                 modifier = Modifier
                     .size(64.dp)
                     .clip(shape = RoundedCornerShape(100)),
-                painter = rememberImagePainter(data = "https://static.tildacdn.com/tild3432-3435-4561-b136-663134643162/photo_2021-04-16_18-.jpg",),
+                painter = rememberImagePainter(data = model.imageId),
                 contentDescription = "Speaker",
                 contentScale = ContentScale.Crop
             )
@@ -99,16 +102,16 @@ internal fun SpeakerCardView(
     }
 }
 
-@Preview
-@Composable
-fun PreviewSpeakerCard(){
-    SpeakerCardView(
-        model = SpeakerItemModel(
-            imageId = R.drawable.img_man_one,
-            timeZone = "10:00-11:00",
-            speaker = "Аналий Жопанов",
-            text = "Доклад: А тут текста я не придумал так что пусть будет просто текст",
-            inFav = true
-        )
-    )
-}
+//@Preview
+//@Composable
+//fun PreviewSpeakerCard(){
+//    SpeakerCardView(
+//        model = SpeakerItemModel(
+//            imageId = R.drawable.img_man_one,
+//            timeZone = "10:00-11:00",
+//            speaker = "Аналий Жопанов",
+//            text = "Доклад: А тут текста я не придумал так что пусть будет просто текст",
+//            inFav = true
+//        )
+//    )
+//}
